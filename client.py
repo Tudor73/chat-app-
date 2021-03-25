@@ -15,6 +15,9 @@ def send(msg):
     message = msg.encode(FORMAT)
     client.send(message)
 
+name = input("Enter your name: ")
+send(name)
+
 while True:
     send_msg = input("S: ")
     send(send_msg)
