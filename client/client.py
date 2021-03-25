@@ -1,6 +1,8 @@
 from socket import AF_INET, socket , SOCK_STREAM
 from threading import Lock, Thread
 
+
+# the client interface 
 class Client:
     DISCONNECT_MESSAGE = "quit"
     HEADER = 256

@@ -9,18 +9,6 @@ c2 = Client("Gigi")
 c3 = Client("ANdi")
 
 time.sleep(1)
-
-c1.send_message("hello")
-time.sleep(0.1)
-c2.send_message("hi")
-time.sleep(0.1)
-c3.send_message("salut")
-time.sleep(0.1)
-c1.send_message("quit")
-time.sleep(0.1)
-c2.send_message("quit")
-
-
 def update_messages():
     while True:
         try:       
@@ -34,3 +22,17 @@ def update_messages():
             break
 
 threading.Thread(target=update_messages).start()
+
+
+
+
+c1.send_message("hello")
+time.sleep(0.1)
+c2.send_message("hi")
+time.sleep(0.1)
+c3.send_message("salut")
+time.sleep(0.1)
+c1.send_message("quit")
+time.sleep(0.1)
+c2.send_message("quit")
+c3.send_message("quit")
