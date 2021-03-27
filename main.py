@@ -3,20 +3,19 @@ from flask import Flask, render_template, request, url_for, redirect
 app = Flask(__name__)
 
 @app.route('/')
-def home():
-    return render_template("base.html")
+def main():
+    return redirect(url_for("login"))
 
 @app.route('/login', methods = ["POST", "GET"])
 def login():
     if request.method == "POST":
-        user = request.form["name"]
-        return redirect(url_for("user", user = user))
+        return redirect(url_for("home"))
     else:
         return render_template("login.html")
 
-@app.route("/<user>")
-def user(user):
-    return f"<h1>{user}</h1>"
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
 if __name__ == "__main__":
     app.run(debug = True)
