@@ -54,6 +54,7 @@ def handle_client(person):
                 print(f"{name} has left the chat" )
                 break
             else:
+                print(msg)
                 broadcast(msg, person.name)
             print(f"{person.name}, {addr} said: ", msg)
             

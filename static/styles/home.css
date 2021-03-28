@@ -5,19 +5,8 @@
     height:500px;
     margin-top: 3%;
     border: 1px solid black;
+    overflow: scroll;
 }
-.send{
-    position: absolute;
-    color:white;
-    background-color: rgba(13, 87, 224, 0.795);
-    padding: 10px;
-    border:none;
-    width: 7%;
-    border-radius: 5px;
-    bottom:10.5%;
-    margin-left:52%
-}
-input {
+.input-group{
     margin-top: 1%;
-    margin-left:30.5%;
 }
