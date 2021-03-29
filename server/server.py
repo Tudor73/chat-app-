@@ -44,7 +44,7 @@ def handle_client(person):
     person.name = client.recv(SIZE).decode(FORMAT) # first message is always the name
     name = person.name
     print(f"{person.name} has entered the chat ")
-
+    broadcast(f"{person.name} has entered the chat ",'')
     while True:
         try:
             msg = client.recv(SIZE).decode()
@@ -54,9 +54,8 @@ def handle_client(person):
                 print(f"{name} has left the chat" )
                 break
             else:
-                print(msg)
                 broadcast(msg, person.name)
-            print(f"{person.name}, {addr} said: ", msg)
+                print(f"{person.name}: ", msg)
             
         except ConnectionResetError:
             Persons.remove(person)
@@ -72,20 +71,23 @@ def handle_client(person):
     client.close()
 
 def start():
-    server.listen(5)
     print(f"[LISTENING] Server listening on {SERVER}")
     while True:
-        client, addr = server.accept() # waiting for new connections 
-        person = Person(addr, client) # creating new Person object for every new client 
-        Persons.append(person)
-        print(f"[CONNECTION] {addr} connected to the server at {time.time()}")
-        thread = threading.Thread(target = handle_client, args=(person,)) # starts new thread for each client
-        thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
-
+        try:
+            client, addr = server.accept() # waiting for new connections 
+            person = Person(addr, client) # creating new Person object for every new client 
+            Persons.append(person)
+            print(f"[CONNECTION] {addr} connected to the server at {time.time()}")
+            thread = threading.Thread(target = handle_client, args=(person,)) # starts new thread for each client
+            thread.start()
+            print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
+        except Exception as e:
+            print("[EXCEPTION]", e)
+            break
     print("SERVER ERROR")
 
 if __name__ == "__main__":
+    server.listen(5)
     print("[STARTING] server is starting...")
     start()
 
