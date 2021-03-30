@@ -1,7 +1,10 @@
 const chat = document.querySelector(".textarea");
 const input = document.querySelector("input");
+const form = document.getElementsByTagName("form")[0];
 
-const ADDRESS = "http://127.0.0.1/5000"
+
+const ADDRESS = "http://127.0.0.1/5000";
+
 
 
 window.onload = function(){
@@ -9,14 +12,27 @@ window.onload = function(){
 
   socket.on('connect', async function(){
     var name = await load_name();
-    console.log(name);
-    socket.send("Connected ");
+    var msg = name + " has entered the chat ";
+    socket.send(msg);
+
+    new_messages = await load_messages();
+    new_messages.forEach(msg => display_message(msg));
   })
-  socket.on('message', function(msg){
-    msg = input.value;
-    // console.log(msg);
-  })
+
+
+  form.onsubmit = async function (e){
+    e.preventDefault();
+    var msg = input.value;
+    input.value = "";
+
+    let user_name = await load_name();
+    var message_to_show = user_name+": "+ msg;
+    display_message(message_to_show);
+    socket.send(message_to_show);
+  }
+  
 };
+
 
 async function load_name(){
     return  await fetch('/get_name')
@@ -27,15 +43,27 @@ async function load_name(){
     });
  }
 
+async function load_messages(){
+  return await fetch("/get_messages")
+  .then(async function (response){
+    return await response.json();
+  })
+  .then(function (text){
+    return text["messages"];
+  });
+}
 
-
+function display_message(msg){
+  console.log(msg)
+  let p = document.createElement('P');
+  p.innerHTML = msg;
+  chat.appendChild(p);
+}
 
 // $(function() {
 //   $('#sendBtn').on('click', function(e) {
 //   var msg = input.value;
-//   let p = document.createElement('P');
-//   p.innerHTML = input.value;
-//   chat.append(p);
+
 //   input.value = "";
 //   //   e.preventDefault()
 //     $.getJSON('/run',

@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
-from client.client import Client
 from flask_socketio import SocketIO
 import time
+from views import view
 
 app = Flask(__name__)
+app.register_blueprint(view, url_prefix= "/")
 app.secret_key ="secret"
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
@@ -14,37 +15,10 @@ NAME_KEY = "user"
 
 @socketio.on('message')
 def handle_message(msg):
-    print(msg)
+    messages.append(msg)
     socketio.send(msg, broadcast = True)
     
-
-@app.route('/')
-def main():
-    return redirect(url_for("login"))
-
-@app.route('/login', methods = ["POST", "GET"])
-def login():
-    if request.method == "POST":
-        name = request.form["name"]
-        session[NAME_KEY] = name
-        return redirect(url_for("home"))
-    else:
-        if NAME_KEY in session:
-            return redirect(url_for("home"))
-    return render_template("login.html")
-
-@app.route("/home")
-def home():
-    if NAME_KEY not in session:
-        return redirect(url_for("login"))
-    return render_template("home.html")
-
-@app.route("/logout")
-def logout():
-    session.pop(NAME_KEY, None)
-    return redirect(url_for("login"))
-
-@app.route("/run", methods = ["GET"])
+@app.route("/send_message", methods = ["GET"])
 def run():
     msg = request.args.get("message")
     print(msg)
