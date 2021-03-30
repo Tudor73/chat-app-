@@ -12,20 +12,25 @@ $(function() {
       $.getJSON('/run',
         {message:msg},
           function(data) {
-    
       });
-    fetch('/get_messages')
-      .then(function (response) {
-          return response.text();
-      }).then(function (text) {
-          console.log('GET response text:');
-          console.log(text); // Print the greeting as text
-      });
-  
+
       return false;
     });
   });
+window.onload = function(){
+  var loop = setInterval(update, 100);
+  update();
+}
+function update(){
 
+  fetch('/get_messages')
+  .then(function (response) {
+    return response.text();
+  }).then(function (text) {
+    console.log('GET response text:');
+    console.log(text); // Print the greeting as text
+  });
+}
 
 
 

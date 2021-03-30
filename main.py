@@ -18,6 +18,8 @@ def main():
 @app.route('/login', methods = ["POST", "GET"])
 def login():
     global client
+    if client:
+        client.disconnect()
     if request.method == "POST":
         name = request.form["name"]
         session[NAME_KEY] = name
@@ -36,19 +38,20 @@ def home():
 
 @app.route("/logout")
 def logout():
-    session.pop(NAME_KEY, None)
     global client 
     if client:
         client.disconnect()
-
+    client = None
+    session.pop(NAME_KEY, None)
     return redirect(url_for("login"))
 
 @app.route("/run", methods = ["GET"])
-def send():
+def run():
     global client
 
     msg = request.args.get("message")
     if client:
+        print(msg)
         client.send_message(msg)
     return "none"
 

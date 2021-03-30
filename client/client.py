@@ -7,7 +7,7 @@ class Client:
     DISCONNECT_MESSAGE = "quit"
     HEADER = 256
     PORT = 5050
-    SERVER = "192.168.1.103"
+    SERVER = "192.168.1.106"
     ADDR = (SERVER, PORT)
     FORMAT = "utf-8"
 

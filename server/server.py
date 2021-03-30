@@ -5,7 +5,7 @@ import time
 
 # constant values 
 PORT = 5050
-SERVER = "192.168.1.103"
+SERVER = "192.168.1.106"
 ADDR = (SERVER, PORT)
 SIZE = 256
 FORMAT = "utf8"
@@ -28,6 +28,7 @@ def broadcast(msg, name):
         client = person.client
         try:
             client.send((name +': '+ msg).encode())
+            print(name + ": "+msg)
         except Exception as e:
             print("[EXCEPTION] ", e)
             break
@@ -43,7 +44,6 @@ def handle_client(person):
     addr = person.addr
     person.name = client.recv(SIZE).decode(FORMAT) # first message is always the name
     name = person.name
-    print(f"{person.name} has entered the chat ")
     broadcast(f"{person.name} has entered the chat ",'')
     while True:
         try:
@@ -51,16 +51,13 @@ def handle_client(person):
             if msg == DISCONNECT_MESSAGE: # if the user quits we delete him from persons before broadcast 
                 Persons.remove(person)
                 broadcast(f"{name} has left the chat",'')
-                print(f"{name} has left the chat" )
                 break
             else:
                 broadcast(msg, person.name)
-                print(f"{person.name}: ", msg)
             
         except ConnectionResetError:
             Persons.remove(person)
             broadcast(f"{name} has left the chat",'')
-            print(f"{name} has left the chat" )
             break
 
         except Exception as e:
