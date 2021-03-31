@@ -16,13 +16,12 @@ NAME_KEY = "user"
 @socketio.on('message')
 def handle_message(msg):
     messages.append(msg)
-    socketio.send(msg, broadcast = True)
-    
-@app.route("/send_message", methods = ["GET"])
-def run():
-    msg = request.args.get("message")
-    print(msg)
-    return "none"
+    socketio.send(msg, broadcast = True)         
+
+@socketio.on('event')
+def handle_event(json):
+    socketio.emit("message response", json)
+    print(17)
 
 @app.route("/get_messages")
 def get_messages():
@@ -32,10 +31,17 @@ def get_messages():
 def get_name():
     data = {"name": ""}
     if NAME_KEY in session:
-        print(session[NAME_KEY])
         data = {"name": session[NAME_KEY]}
     return jsonify(data)    
 
 if __name__ == "__main__":
     # Thread(target=update_messages).start()
-    socketio.run(app)
+    socketio.run(app, host='192.168.1.106', port=5000)
+
+
+    # handle disconnection when clien logs out or closes window
+    # higlight the messages sent in client window
+    #format message (name message data)
+    #fix scrollling 
+    # work on front end 
+    #responsivenes
