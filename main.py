@@ -13,15 +13,11 @@ socketio = SocketIO(app)
 messages = []
 NAME_KEY = "user"
 
-@socketio.on('message')
-def handle_message(msg):
-    messages.append(msg)
-    socketio.send(msg, broadcast = True)         
-
 @socketio.on('event')
-def handle_event(json):
+def handle_event(json, methods = ["GET", "POST"]):
+    messages.append(json)   
+    print(messages, sep="\n")
     socketio.emit("message response", json)
-    print(17)
 
 @app.route("/get_messages")
 def get_messages():
@@ -36,8 +32,8 @@ def get_name():
 
 if __name__ == "__main__":
     # Thread(target=update_messages).start()
-    socketio.run(app, host='192.168.1.106', port=5000)
-
+    # socketio.run(app, host='192.168.1.106', port=5000)
+    socketio.run(app)
 
     # handle disconnection when clien logs out or closes window
     # higlight the messages sent in client window
