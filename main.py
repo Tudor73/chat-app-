@@ -19,6 +19,12 @@ def handle_event(json, methods = ["GET", "POST"]):
     print(messages, sep="\n")
     socketio.emit("message response", json)
 
+@socketio.on('disconnect')
+def handle_disconnection():
+    
+    msg = {"name": session[NAME_KEY], "message": " has left the chat"}
+    messages.append(msg)
+    socketio.emit("message response",msg)
 @app.route("/get_messages")
 def get_messages():
     return jsonify({"messages": messages})

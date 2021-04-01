@@ -6,11 +6,11 @@ const logout = document.getElementsByTagName('a')[2];
 const ADDRESS = "http://127.0.0.1/5000";
 
   var socket = io.connect()
-
+  var name = null 
   socket.on('connect', async function(){
-    var name = await load_name();
+    name = await load_name();
     socket.emit('event', {
-      name: name,
+      name: name+ " ", 
       message: "has entered the chat",
     })
 
@@ -22,7 +22,7 @@ const ADDRESS = "http://127.0.0.1/5000";
       input.value = "";
       
       socket.emit('event',{
-        name: name,
+        name: name+ ": ",
         message: msg,
       });
     }
@@ -32,20 +32,25 @@ const ADDRESS = "http://127.0.0.1/5000";
     display_message(msg);
   })
 
-  socket.on("disconnect", async function (msg) {
-    console.log("disconnected");
-  });
-
   window.onload = async function (){
     new_messages = await load_messages();
     new_messages.forEach(msg => display_message(msg));
   }
 
+  // window.onbeforeunload() = function (){
+  //   socket.emit("event",{
+  //     name: name,
+  //     message : " has left the chat ",
+  //   })
+  //   socket.disconnect();
+  //   return null;
+  // }
+
   logout.onclick = function() {
-    socket.emit("event",{
-      name: '',
-      message : "disconnected",
-    })
+    socket.emit('event',{
+      name: name,
+      message: " has left the chat ",
+    });
     socket.disconnect();
   }
 
@@ -70,7 +75,7 @@ async function load_messages(){
 
 function display_message(msg){
   console.log(msg)
-  message_to_show = msg["name"] + ":  "+ msg["message"];
+  message_to_show = msg["name"] + msg["message"];
   let p = document.createElement('P');
   p.innerHTML = message_to_show;
   p.classList.add("chat-bubble");
