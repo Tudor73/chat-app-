@@ -1,11 +1,12 @@
 
 .textarea{
-    width: 40%;
+    width: 50%;
     margin:auto;
-    height:500px;
-    margin-top: 3%;
+    height:580px;
+    margin-top: 1%;
     border: 1px solid black;
     overflow: scroll;
+    background-color: #f1f1f1;
 }
 .input-group{
     margin-top: 1%;
@@ -15,11 +16,20 @@
     background-color: #f1f1f1;
     border-radius: 5px;
     padding: 10px;
-    margin: 10px 0;
+    margin: 10px;
   }
 
 .darker {
     border-color: #ccc;
     background-color: #ddd;
 }
+.name{
+    font-weight: bold;
+    float:left;
+    margin-right: 10px;
+}
+.display-right{
+    float:right;
+}
+
   
