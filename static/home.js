@@ -28,23 +28,14 @@ const ADDRESS = "http://127.0.0.1/5000";
     }
   })
 
-  socket.on('message response',function(msg){
-    display_message(msg);
+  socket.on('message response', async function(msg){
+    await display_message(msg);
   })
 
   window.onload = async function (){
     new_messages = await load_messages();
     new_messages.forEach(msg => display_message(msg));
   }
-
-  // window.onbeforeunload() = function (){
-  //   socket.emit("event",{
-  //     name: name,
-  //     message : " has left the chat ",
-  //   })
-  //   socket.disconnect();
-  //   return null;
-  // }
 
   logout.onclick = function() {
     socket.emit('event',{
@@ -73,7 +64,7 @@ async function load_messages(){
   });
 }
 
-function display_message(msg){
+async function display_message(msg){
   console.log(msg)
   message_to_show = msg["name"] + msg["message"];
   let p = document.createElement('P');

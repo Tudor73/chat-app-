@@ -21,10 +21,10 @@ def handle_event(json, methods = ["GET", "POST"]):
 
 @socketio.on('disconnect')
 def handle_disconnection():
-    
     msg = {"name": session[NAME_KEY], "message": " has left the chat"}
     messages.append(msg)
-    socketio.emit("message response",msg)
+    socketio.emit("message response", msg)
+
 @app.route("/get_messages")
 def get_messages():
     return jsonify({"messages": messages})
@@ -38,10 +38,9 @@ def get_name():
 
 if __name__ == "__main__":
     # Thread(target=update_messages).start()
-    # socketio.run(app, host='192.168.1.106', port=5000)
-    socketio.run(app)
+    socketio.run(app, host='192.168.1.106', port=5000)
+    # socketio.run(app)
 
-    # handle disconnection when clien logs out or closes window
     # higlight the messages sent in client window
     #format message (name message data)
     #fix scrollling 
