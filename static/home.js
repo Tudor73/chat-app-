@@ -9,7 +9,6 @@ const ADDRESS = "http://127.0.0.1/5000";
   var socket = io.connect()
   var name = null 
   socket.on('connect', async function(){
-    user_messages.push("has entered the chat");
     name = await load_name();
     socket.emit('event', {
       name: name, 
@@ -88,18 +87,13 @@ async function display_message(msg){
   div.classList.add("chat-bubble");
   if(user_messages.includes(msg["message"])){
     div.classList.add("darker");
-    console.log(div.childNodes)
-    div.childNodes[0].classList.add('display-right');
+    // div.childNodes[0].classList.add('display-right');
   }
   chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight- chat.clientHeight;
 }
 
 
-function update_scroll(){
-  if (!scrolled){
-    chat.scrollTop = chat.scrollHeight;
-  }
-}
 
 // $(function() {
 //   $('#sendBtn').on('click', function(e) {

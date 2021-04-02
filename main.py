@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.register_blueprint(view, url_prefix= "/")
 app.secret_key ="secret"
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, pingInterval = 3)
+socketio = SocketIO(app, pingInterval = 3, pingTimeout = 3)
 
 
 messages = []
@@ -41,8 +41,6 @@ if __name__ == "__main__":
     # socketio.run(app, host='192.168.1.106', port=5000)
     socketio.run(app)
 
-    # higlight the messages sent in client window
-    #format message (name message data)
     #fix scrollling 
     # work on front end 
     #responsivenes
