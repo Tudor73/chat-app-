@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 from flask import Blueprint
-
+from .database import Database
 
 view = Blueprint("views", __name__, static_folder="static", template_folder="template")
 
@@ -30,3 +30,28 @@ def home():
 def logout():
     session.pop(NAME_KEY, None)
     return redirect(url_for("views.login"))
+
+
+@view.route("/get_messages")
+def get_messages():
+    db = Database()
+    results = db.get_all_messages()
+    results = trim_seconds_from_messages(results)
+    print(results[2]["time"])
+    return jsonify({"messages": results})
+
+@view.route("/get_name")
+def get_name():
+    data = {"name": ""}
+    if NAME_KEY in session:
+        data = {"name": session[NAME_KEY]}
+    return jsonify(data)    
+
+def trim_seconds_from_messages(msgs):
+    messages = []
+    for msg in msgs: 
+        msg_copy = msg 
+        msg_copy["time"] = msg["time"][:16] 
+        messages.append(msg_copy)
+    return messages
+
