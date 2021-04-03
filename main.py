@@ -9,7 +9,6 @@ app.secret_key ="secret"
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, pingInterval = 3)
 
-
 messages = []
 NAME_KEY = "user"
 
