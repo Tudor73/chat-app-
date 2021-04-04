@@ -21,13 +21,23 @@ class Database:
         self.cursor.execute(query)
         self.conn.commit()
 
-    def get_all_messages(self, limit = 100, name =None):
-        if not name:
-            query = f"SELECT * FROM {NAME} ORDER BY time"
-            self.cursor.execute(query)
-        else:
-            query = f"SELECT * FROM {NAME} WHERE NAME = ? ORDER BY time"
-            self.cursor.execute(query, (name,))
+    def get_messages_by_name(self, limit = 100, name=None):
+        query = f"SELECT * FROM {NAME} WHERE NAME = ? ORDER BY time DESC LIMIT {limit}"
+        self.cursor.execute(query,(name,))
+        messages = self.cursor.fetchall()
+
+        results = []
+        for msg in messages:
+            id, name, content, date = msg
+            data = {"name": name, "message": content, "time":str(date)}
+            if limit > 1:
+                results.append(data)
+            else:
+                return data
+        return results
+    def get_all_messages(self, limit = 75):
+        query = f"SELECT * FROM {NAME}  ORDER BY time"
+        self.cursor.execute(query)
         
         messages = self.cursor.fetchall()
         results = []

@@ -37,7 +37,6 @@ def get_messages():
     db = Database()
     results = db.get_all_messages()
     results = trim_seconds_from_messages(results)
-    print(results[2]["time"])
     return jsonify({"messages": results})
 
 @view.route("/get_name")
@@ -46,6 +45,8 @@ def get_name():
     if NAME_KEY in session:
         data = {"name": session[NAME_KEY]}
     return jsonify(data)    
+
+
 
 def trim_seconds_from_messages(msgs):
     messages = []
