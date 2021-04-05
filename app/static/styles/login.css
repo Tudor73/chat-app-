@@ -1,0 +1,28 @@
+.wrapper{
+    width:25%;
+    height:35vh;
+    margin: auto;
+    margin-top: 5%;
+    border: 1px solid black;
+    border-radius: 2px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form-control{
+    width:90%;
+    padding: 10px;
+    margin-bottom: 5%;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height:30vh;
+    margin:auto;
+}
+.btn{
+    padding: 8px 14px;
+    font-size: 19px;
+    width: 90%;
+}

@@ -40,14 +40,6 @@ window.onload = async function (){
     await display_message(msg);
   })
 
-  // logout.onclick = function() {
-  //   socket.emit('event',{
-  //     name: name,
-  //     message: " has left the chat ",
-  //   });
-  //   // socket.disconnect();
-  // }
-
 async function load_name(){
     return  await fetch('/get_name')
     .then(async function (response) {
@@ -77,8 +69,9 @@ async function display_message(msg){
   p2.innerText = msg["message"];
   
   let p3 = document.createElement('span');
-  p3.innerText = msg["time"];
-  p3.classList.add("time")
+  let new_time = format_time(msg["time"])
+  p3.innerText = new_time;
+  p3.classList.add("time");
 
   console.log(msg["message"])
   if (msg["message"].includes('entered')){
@@ -100,6 +93,14 @@ async function display_message(msg){
   chat.scrollTop = chat.scrollHeight- chat.clientHeight;
 }
 
+
+function format_time(time){
+  let yyyy = time.slice(0,4);
+  let mm = time.slice(5,7);
+  let dd = time.slice(8,10);
+  let time_formatted = dd+ '-'+mm +'-'+ yyyy + ' '+ time.slice(11);
+  return time_formatted;
+}
 // $(function() {
 //   $('#sendBtn').on('click', function(e) {
 //   var msg = input.value;

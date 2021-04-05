@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block form %}
+<link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename = 'styles/login.css')}}">
 <form method="POST">
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Name</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name">
-    </div>
+  <div class="wrapper">
+    <div class="container">
+      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name" placeholder="Enter your name">
     <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+  </div>
   </form>
 {% endblock %}
