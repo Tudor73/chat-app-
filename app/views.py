@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, session, jsonify
+from flask import Flask, render_template, request, url_for, redirect, session, jsonify, flash
 from flask import Blueprint
 from .database import Database
 
@@ -10,11 +10,16 @@ NAME_KEY = "user"
 @view.route('/login', methods = ["POST", "GET"])
 def login():
     if request.method == "POST":
-        name = request.form["name"]  
-        session[NAME_KEY] = name
-        return redirect(url_for("views.home"))
+        name = request.form["name"]
+        if len(name) >= 2:  
+            session[NAME_KEY] = name
+            flash("Login Succesful!")
+            return redirect(url_for("views.home"))
+        else:
+            flash("2Name must be longer than one character")
     else:
         if NAME_KEY in session:
+            flash("Already Logged In")
             return redirect(url_for("views.home"))
     return render_template("login.html")
 
@@ -28,6 +33,8 @@ def home():
 
 @view.route("/logout")
 def logout():
+    if NAME_KEY in session:
+        flash("1You have been logged out","info")
     session.pop(NAME_KEY, None)
     return redirect(url_for("views.login"))
 

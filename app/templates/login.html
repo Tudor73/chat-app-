@@ -1,6 +1,33 @@
 {% extends "base.html" %}
 {% block form %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {%for msg in messages %}
+    {% set prefix = msg[0] %}
+    {% set display = msg[1:] %}
+    {% if prefix == "1" %}
+      <div class="alert alert-secondary" role="alert">
+      {{ display }}
+      </div>
+    {% else %}
+      <div class="alert alert-danger" role="alert">
+      {{ display }}
+      </div>
+    {% endif %}
+    {%endfor%}
+  {% endif %}
+{% endwith %}
+
+
 <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename = 'styles/login.css')}}">
+<style>
+  @media screen and (max-width: 400px) {
+    .wrapper{
+        width:75%;
+    }
+}
+</style>
 <form method="POST">
   <div class="wrapper">
     <div class="container">

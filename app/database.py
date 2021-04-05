@@ -21,7 +21,7 @@ class Database:
         self.cursor.execute(query)
         self.conn.commit()
 
-    def get_messages_by_name(self, limit = 100, name=None):
+    def get_messages_by_name(self, limit = 75, name=None):
         query = f"SELECT * FROM {NAME} WHERE NAME = ? ORDER BY time DESC LIMIT {limit}"
         self.cursor.execute(query,(name,))
         messages = self.cursor.fetchall()
@@ -36,9 +36,8 @@ class Database:
                 return data
         return results
     def get_all_messages(self, limit = 75):
-        query = f"SELECT * FROM {NAME}  ORDER BY time"
+        query = f"SELECT * FROM {NAME}  ORDER BY time LIMIT {limit}"
         self.cursor.execute(query)
-        
         messages = self.cursor.fetchall()
         results = []
 
@@ -49,6 +48,11 @@ class Database:
         return list(results)
 
     def insert_message(self, name, msg):
+        
         query = f"INSERT INTO {NAME} VALUES(?, ?, ?, ?)"
         self.cursor.execute(query, (None, name, msg, datetime.now()))
+        self.conn.commit()
+    def delete_messages(self):
+        query = f"DROP TABLE IF EXISTS {NAME}"
+        self.cursor.execute(query)
         self.conn.commit()

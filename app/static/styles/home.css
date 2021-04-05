@@ -1,8 +1,8 @@
 
 .textarea{
-    width: 50%;
+    width: 65%;
     margin:auto;
-    height:580px;
+    height:540px;
     margin-top: 1%;
     border: 1px solid black;
     overflow: scroll;
@@ -34,4 +34,8 @@
     right:2%;
     opacity: 0.6;
 }
-  
+.input-group{
+    width: 65%;
+    margin: auto;
+    margin-top: 1%;
+}
