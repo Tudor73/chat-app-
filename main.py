@@ -40,5 +40,5 @@ def trim_seconds_from_message(msg):
     return msg_copy
 
 if __name__ == "__main__":
-    socketio.run(app, host='192.168.1.106', port=5000)
-    # socketio.run(app)
+    socketio.run(app, host='192.168.1.106', port=5000) # running it on the ip address so that devices on the same network can connect 
+    # socketio.run(app) # running on the default settings
