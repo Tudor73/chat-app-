@@ -1,34 +1,34 @@
+// selectors from the front end 
 const chat = document.querySelector(".textarea");
 const input = document.querySelector("input");
 const form = document.getElementsByTagName("form")[0];
 const logout = document.getElementsByTagName('a')[2];
 
-let user_messages = [];
-const ADDRESS = "http://127.0.0.1/5000";
-
+// global variables
+let user_messages = []; // messages sent by the current user 
+var name = null // name of the user
 
 window.onload = async function (){
+  // on load we get all the previous messages sent in the chat room 
   new_messages = await load_messages();
-  new_messages.forEach(msg => display_message(msg));
+  new_messages.forEach(msg => display_message(msg)); // for every message we display on the client's side 
 }
 
-
   var socket = io.connect()
-  var name = null 
   socket.on('connect', async function(){
-    name = await load_name();
-    socket.emit('event', {
+    name = await load_name();     // get the name from the flask session 
+    socket.emit('event', {    // send the messages as json to the flask server 
       name: name, 
       message: "has entered the chat",
     })
     
     form.onsubmit = async function (e){
-      e.preventDefault();
+      e.preventDefault();       //prevents browser from reloading 
       var msg = input.value;
       if (msg === "")
         return false;
       input.value = "";
-      user_messages.push(msg)
+      user_messages.push(msg)     // push the messages sent by the client in his array 
       socket.emit('event',{
         name: name,
         message: msg,
@@ -36,20 +36,20 @@ window.onload = async function (){
     }
   })
 
-  socket.on('message response', async function(msg){
+  socket.on('message response', async function(msg){    // receiving messages from server and displaying them 
     await display_message(msg);
   })
 
-async function load_name(){
+async function load_name(){       // async function for loading the name from the server session
     return  await fetch('/get_name')
     .then(async function (response) {
       return await response.json();
     }).then(function (text) {
-        return text["name"];
+        return text["name"]; 
     });
  }
 
-async function load_messages(){
+async function load_messages(){       // async function for loading the messages from the server database
   return await fetch("/get_messages")
   .then(async function (response){
     return await response.json();
@@ -59,7 +59,7 @@ async function load_messages(){
   });
 }
 
-async function display_message(msg){
+async function display_message(msg){ // displaying a message 
 
   let p1 = document.createElement('span')
   p1.innerText = msg["name"];
@@ -90,31 +90,13 @@ async function display_message(msg){
     div.classList.add("darker");
   }
   chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight- chat.clientHeight;
+  chat.scrollTop = chat.scrollHeight- chat.clientHeight; // makes the chat area autoscroll to the bottom on message received 
 }
 
-
-function format_time(time){
+function format_time(time){ // utility function for changing the time format before displaying
   let yyyy = time.slice(0,4);
   let mm = time.slice(5,7);
   let dd = time.slice(8,10);
   let time_formatted = dd+ '-'+mm +'-'+ yyyy + ' '+ time.slice(11);
   return time_formatted;
 }
-// $(function() {
-//   $('#sendBtn').on('click', function(e) {
-//   var msg = input.value;
-
-//   input.value = "";
-//   //   e.preventDefault()
-//     $.getJSON('/run',
-//       {message:msg},
-//         function(data) {
-//     });
-
-//     return false;
-//   });
-// });
-
-// function update(){
-
